@@ -1,4 +1,6 @@
-README — Porsche Sales Dashboard | Endereço do repositório público: https://cainaazevedopsico.github.io/Desafio-acelera-o-html-dados-de-porsche/
+README — Porsche Sales Dashboard | 
+Endereço do repositório público: https://github.com/cainaazevedopsico/Desafio-acelera-o-html-dados-de-porsche
+Endereço do HTML: https://cainaazevedopsico.github.io/Desafio-acelera-o-html-dados-de-porsche/ 
 =================================
 
 DOCUMENTO DE APOIO AO EXERCÍCIO DO CURSO
