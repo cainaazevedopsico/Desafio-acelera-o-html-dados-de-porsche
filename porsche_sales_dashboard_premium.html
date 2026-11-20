@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090a0c">
+<title>Porsche | Sales Intelligence</title>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#090a0c;--surface:#111316;--surface-2:#171a1f;--surface-3:#20242a;
+  --line:#2a2e34;--line-soft:rgba(255,255,255,.075);
+  --text:#f4f4f2;--muted:#9a9da3;--soft:#c6c8cc;--red:#d5001c;--red-bright:#f01432;
+  --silver:#b9bdc4;--steel:#75808d;--blue:#6d879b;--green:#8aab9a;--amber:#d2ad73;
+  --radius:12px;--shadow:0 18px 50px rgba(0,0,0,.23);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+ radial-gradient(ellipse at 82% 0%,rgba(91,100,111,.13),transparent 32rem),
+ radial-gradient(ellipse at 0% 30%,rgba(213,0,28,.055),transparent 34rem),
+ var(--bg);color:var(--text);font:14px/1.5 Inter,"Segoe UI",Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.topbar{position:relative;overflow:hidden;background:linear-gradient(118deg,#0b0c0e 0%,#14171b 58%,#0b0c0e 100%);border-bottom:1px solid rgba(255,255,255,.09)}
+.topbar:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.18;background:repeating-linear-gradient(128deg,transparent 0 84px,rgba(255,255,255,.035) 85px,transparent 87px 170px)}
+.top-inner{position:relative;z-index:1;max-width:1540px;margin:auto;padding:22px clamp(18px,4vw,58px) 28px}
+.brandline{display:flex;align-items:center;justify-content:space-between;gap:18px;border-bottom:1px solid var(--line-soft);padding-bottom:15px}
+.brand{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:800;letter-spacing:.24em;color:#f5f5f3}
+.brand-mark{width:28px;height:28px;border:1px solid rgba(255,255,255,.45);display:grid;place-items:center;font-size:15px;font-weight:800;letter-spacing:-.08em;transform:skew(-8deg)}
+.brand-sub{color:#777d85;font-weight:600;letter-spacing:.18em}
+.top-meta{display:flex;align-items:center;gap:10px;color:#9a9da3;font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#8eaa98;box-shadow:0 0 10px rgba(142,170,152,.55)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:24px;padding:27px 0 5px}
+.eyebrow{display:flex;align-items:center;gap:9px;color:#ef5367;font-size:10px;letter-spacing:.22em;font-weight:800;text-transform:uppercase}
+.eyebrow:before{content:"";width:25px;height:2px;background:var(--red)}
+h1{margin:9px 0 5px;font-size:clamp(30px,4.1vw,52px);line-height:1.02;letter-spacing:-.055em;font-weight:750}
+h1 span{font-weight:300;color:#aeb2b8}
+.hero-copy{margin:10px 0 0;color:#a4a8ae;font-size:13px;max-width:650px}
+.hero-stamp{min-width:190px;padding:13px 16px;border:1px solid rgba(255,255,255,.13);background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.015));border-radius:9px}
+.hero-stamp strong{display:block;font-size:22px;line-height:1.1;letter-spacing:-.04em}
+.hero-stamp small{display:block;margin-top:5px;color:#8f949c;font-size:9px;letter-spacing:.16em;text-transform:uppercase}
+main{max-width:1540px;margin:auto;padding:24px clamp(14px,3.2vw,48px) 48px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:25px 0 11px}
+.section-head:first-child{margin-top:0}
+.section-title{display:flex;align-items:center;gap:11px}
+.section-no{font-size:10px;color:#f05265;letter-spacing:.16em;font-weight:800}
+.section-title h2{font-size:16px;font-weight:680;margin:0;letter-spacing:-.02em}
+.section-note{color:#777e87;font-size:11px}
+.panel{background:linear-gradient(145deg,rgba(25,28,33,.97),rgba(16,18,21,.98));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.filters{padding:15px 17px 12px}
+.filters-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:13px}
+.filters-head strong{font-size:12px;letter-spacing:.02em}
+.filters-head small{color:var(--muted);font-size:10px}
+.filter-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px 13px}
+.field label{display:block;margin:0 0 5px;color:#aeb2b8;font-size:10px;font-weight:700;letter-spacing:.06em}
+select,input{width:100%;height:36px;min-width:0;padding:0 10px;color:#f2f3f3;background:#0d0f12;border:1px solid #343940;border-radius:6px;outline:none;font-size:12px;transition:border-color .18s,box-shadow .18s}
+select:focus,input:focus{border-color:#c84a59;box-shadow:0 0 0 3px rgba(213,0,28,.13)}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='m2 4 4 4 4-4' fill='none' stroke='%23999' stroke-width='1.3'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:27px}
+select option{background:#171a1f;color:#f5f5f5}
+.range{display:flex;gap:7px}
+.range input{flex:1}
+.filter-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line-soft)}
+.filter-info{display:flex;align-items:center;flex-wrap:wrap;gap:8px;color:#8e949c;font-size:10px}
+.filter-count{color:#f0a0aa}
+.active-tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{padding:3px 7px;border-radius:4px;background:rgba(213,0,28,.12);border:1px solid rgba(213,0,28,.24);color:#f18a98;font-size:9px}
+button{border:1px solid #4a4f56;background:#252a30;color:#f4f4f2;border-radius:6px;padding:8px 12px;font-size:10px;font-weight:750;letter-spacing:.06em;text-transform:uppercase;transition:.18s}
+button:hover{background:var(--red);border-color:var(--red)}
+button:focus-visible{outline:2px solid #f26a7b;outline-offset:2px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.kpi{position:relative;min-height:105px;padding:13px 15px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.09);background:linear-gradient(135deg,#1c2025,#13161a)}
+.kpi:after{content:"";position:absolute;width:120px;height:120px;right:-48px;top:-53px;border-radius:50%;border:1px solid rgba(255,255,255,.075);box-shadow:0 0 0 12px rgba(255,255,255,.018),0 0 0 24px rgba(255,255,255,.012)}
+.kpi.primary{background:linear-gradient(125deg,#59111b,#251419 76%,#191416);border-color:rgba(213,0,28,.38)}
+.kpi.silver{background:linear-gradient(125deg,#30353c,#1b1f24 76%)}
+.kpi.blue{background:linear-gradient(125deg,#1c303e,#151d25 76%)}
+.kpi.green{background:linear-gradient(125deg,#20372e,#171f1b 76%)}
+.kpi-label{display:block;color:#b9bdc4;font-size:9px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+.kpi strong{display:block;margin:7px 0 3px;font-size:clamp(21px,2.2vw,29px);letter-spacing:-.045em;line-height:1.05;font-variant-numeric:tabular-nums}
+.kpi small{color:#a1a6ad;font-size:10px}
+.analysis-grid{display:grid;grid-template-columns:1.13fr .87fr;gap:12px}
+.chart-panel{padding:15px 16px 13px;min-width:0;min-height:290px}
+.panel-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:5px}
+.panel-top h3{margin:0;font-size:13px;font-weight:700;letter-spacing:-.015em}
+.panel-index{color:#737a83;font-size:9px;letter-spacing:.14em}
+.hint{margin:3px 0 12px;color:#858c95;font-size:10px}
+.chart-holder{min-height:195px;overflow-x:auto;overflow-y:hidden}
+.mileage-svg{display:block;width:100%;height:auto;overflow:visible}
+.mileage-svg text{font-family:inherit}
+.mileage-svg .axis-label{font-size:10px;fill:#b9bdc4}
+.mileage-svg .bar-count{font-size:10px;fill:#f3f4f4;font-weight:700}
+.mileage-svg .bar-track{fill:#292e34}
+.mileage-svg .bar-rect{transition:opacity .2s,filter .2s}
+.mileage-svg .bar-rect:hover{filter:brightness(1.35)}
+.chart-insight{margin:7px 0 0;padding:9px 10px;background:rgba(255,255,255,.035);border-left:2px solid var(--red);border-radius:0 5px 5px 0;color:#c3c6ca;font-size:10px}
+.payment-layout{display:grid;grid-template-columns:170px minmax(0,1fr);align-items:center;gap:10px;min-height:205px}
+.donut-svg{width:170px;max-width:100%;height:auto;overflow:visible}
+.donut-svg circle{transition:opacity .2s,stroke-width .2s;cursor:default}
+.donut-svg circle:hover,.donut-svg circle:focus-visible{opacity:.78;stroke-width:29;outline:none}
+.donut-center{font-size:23px;font-weight:750;fill:#f5f5f3;text-anchor:middle}
+.donut-sub{font-size:8px;fill:#8d949d;text-anchor:middle;letter-spacing:.13em}
+.legend{display:flex;flex-direction:column;gap:7px;max-height:208px;overflow:auto;padding-right:4px}
+.legend-row{display:grid;grid-template-columns:8px minmax(0,1fr) auto;gap:7px;align-items:center;font-size:10px}
+.legend-dot{width:7px;height:7px;border-radius:2px}
+.legend-name{color:#c5c8cc;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.legend-val{color:#f0f1f1;font-variant-numeric:tabular-nums}
+.muted-empty{display:grid;place-items:center;min-height:150px;color:#9299a2;font-size:11px}
+.status-panel{padding:15px 16px}
+.status-bar{height:12px;display:flex;overflow:hidden;border-radius:20px;background:#272c32;margin:16px 0 13px}
+.status-segment{height:100%;min-width:2px;transition:width .2s}
+.status-legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 12px}
+.status-item{display:grid;grid-template-columns:8px 1fr auto;align-items:center;gap:7px;min-width:0;font-size:10px}
+.status-item .name{color:#b9bdc4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.status-item .value{color:#f0f1f1;font-weight:700;font-variant-numeric:tabular-nums}
+.additional-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.additional-grid .chart-panel{min-height:300px}
+.extra-chart{min-height:220px;overflow-x:auto;overflow-y:hidden}
+.extra-svg{display:block;width:100%;height:auto;min-width:500px;overflow:visible}
+.extra-svg text{font-family:inherit}
+.extra-svg .axis{font-size:10px;fill:#939ba5}
+.extra-svg .axis-strong{font-size:10px;fill:#d8dade;font-weight:700}
+.extra-svg .grid-line{stroke:rgba(255,255,255,.09);stroke-width:1}
+.extra-svg .bar-bg{fill:#292e34}
+.extra-svg .bar-hover{transition:filter .18s,opacity .18s}
+.extra-svg .bar-hover:hover{filter:brightness(1.35)}
+.extra-legend{display:flex;flex-wrap:wrap;gap:7px 12px;margin-top:7px}
+.extra-legend-item{display:flex;align-items:center;gap:6px;color:#aeb4bc;font-size:9px}
+.extra-legend-dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.sort-head{display:inline-flex;align-items:center;gap:6px;padding:0;border:0;background:transparent;color:inherit;font:inherit;font-weight:inherit;letter-spacing:inherit;text-transform:inherit;white-space:nowrap;cursor:pointer}
+.sort-head:hover{background:transparent;border:0;color:#fff}
+.sort-head:focus-visible{outline:1px solid #f26a7b;outline-offset:3px;border-radius:2px}
+.sort-icon{color:#e45a6c;font-size:10px;min-width:8px}
+th[aria-sort=ascending] .sort-icon,th[aria-sort=descending] .sort-icon{color:#ff8a98}
+.sort-note{margin:0 0 9px;color:#858c95;font-size:9px}
+@media(max-width:720px){.additional-grid{grid-template-columns:1fr}.additional-grid .chart-panel{min-height:0}}
+.table-panel{padding:15px 16px;min-width:0}
+.table-wrap{overflow:auto;max-height:440px;border:1px solid var(--line-soft);border-radius:7px}
+table{width:100%;border-collapse:collapse;font-size:10px;white-space:nowrap}
+th,td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.065)}
+th{position:sticky;top:0;z-index:1;background:#20242a;color:#9da3ac;text-align:left;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+td{color:#d6d8db}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:rgba(255,255,255,.035)}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.model-name{font-weight:700;color:#f0f1f2}
+.variation{color:#ff8997;font-weight:800}
+.km-range{display:flex;align-items:center;gap:7px}
+.km-track{width:75px;height:5px;background:#2b3036;border-radius:8px;overflow:hidden}
+.km-fill{height:100%;background:linear-gradient(90deg,#697b8d,#d5001c);border-radius:8px}
+.state-method{color:#e4e5e6}
+.share-cell{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.mini-track{width:55px;height:4px;background:#2b3036;border-radius:5px;overflow:hidden}
+.mini-fill{height:100%;background:var(--red);border-radius:5px}
+.empty{text-align:center;padding:20px;color:#969ca5}
+.table-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:9px;color:#818892;font-size:9px}
+.footer{display:flex;justify-content:space-between;gap:20px;margin-top:25px;padding-top:13px;border-top:1px solid var(--line);color:#777f89;font-size:10px}
+.footer strong{color:#b9bec5;font-weight:650}
+@media(max-width:980px){.filter-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.analysis-grid{grid-template-columns:1fr 1fr}.chart-panel{min-height:280px}.payment-layout{grid-template-columns:145px minmax(0,1fr)}.donut-svg{width:145px}}
+@media(max-width:720px){.hero{grid-template-columns:1fr}.hero-stamp{display:none}.top-meta{font-size:9px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.analysis-grid{grid-template-columns:1fr}.chart-panel{min-height:0}.payment-layout{grid-template-columns:150px minmax(0,1fr)}.donut-svg{width:150px}.footer{flex-direction:column;gap:5px}}
+@media(max-width:520px){.mileage-svg{min-width:590px}.top-inner{padding-top:16px}.brand-sub{display:none}.top-meta{letter-spacing:.07em}.filter-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.filters{padding:12px}.filter-footer{align-items:flex-start;flex-direction:column}.filter-footer button{width:100%}.kpi{padding:11px;min-height:95px}.kpi strong{font-size:21px}.payment-layout{grid-template-columns:125px minmax(0,1fr);gap:5px}.donut-svg{width:125px}.legend{gap:5px}.legend-row{font-size:9px}.status-legend{grid-template-columns:1fr}.section-head{align-items:flex-start;flex-direction:column}.section-note{padding-left:34px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="top-inner">
+    <div class="brandline">
+      <div class="brand"><span class="brand-mark">P</span><span>PORSCHE</span><span class="brand-sub">/ SALES INTELLIGENCE</span></div>
+      <div class="top-meta"><span class="live-dot"></span><span>Base exploratória · dados sanitizados</span></div>
+    </div>
+    <div class="hero">
+      <div>
+        <div class="eyebrow">Data, performance &amp; insights</div>
+        <h1>Sales <span>overview.</span></h1>
+        <p class="hero-copy">Uma leitura visual da operação de vendas Porsche. Explore a composição dos registros, compare preços entre unidades do mesmo modelo e observe os padrões de pagamento.</p>
+      </div>
+      <div class="hero-stamp"><strong>100 <span style="color:#e24b60">/</span> 100</strong><small>Registros na base original</small></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="section-head">
+    <div class="section-title"><span class="section-no">01 /</span><h2>Refinar análise</h2></div>
+    <span class="section-note" id="recordCount">100 de 100 registros</span>
+  </div>
+  <section class="panel filters" aria-label="Filtros da base">
+    <div class="filters-head"><strong>Filtros combináveis</strong><small>Selecione uma ou mais dimensões para atualizar o painel</small></div>
+    <div class="filter-grid">
+      <div class="field"><label for="status">Status da venda / entrega</label><select id="status"><option value="">Todos os status</option></select></div>
+      <div class="field"><label for="city">Cidade</label><select id="city"><option value="">Todas as cidades</option></select></div>
+      <div class="field"><label>Quilometragem (km)</label><div class="range"><input id="kmMin" type="number" min="0" placeholder="Mín." aria-label="Quilometragem mínima"><input id="kmMax" type="number" min="0" placeholder="Máx." aria-label="Quilometragem máxima"></div></div>
+      <div class="field"><label>Preço (USD)</label><div class="range"><input id="priceMin" type="number" min="0" placeholder="Mín." aria-label="Preço mínimo em USD"><input id="priceMax" type="number" min="0" placeholder="Máx." aria-label="Preço máximo em USD"></div></div>
+      <div class="field"><label for="payment">Método de pagamento</label><select id="payment"><option value="">Todos os métodos</option></select></div>
+      <div class="field"><label for="year">Ano do modelo</label><select id="year"><option value="">Todos os anos</option></select></div>
+      <div class="field"><label for="model">Modelo Porsche</label><select id="model"><option value="">Todos os modelos</option></select></div>
+      <div class="field"><label for="state">Estado (UF)</label><select id="state"><option value="">Todos os estados</option></select></div>
+    </div>
+    <div class="filter-footer">
+      <div class="filter-info"><span id="filterSummary">Nenhum filtro aplicado</span><div class="active-tags" id="activeTags"></div></div>
+      <button id="reset" type="button">↺ &nbsp; Limpar filtros</button>
+    </div>
+  </section>
+
+  <div class="section-head">
+    <div class="section-title"><span class="section-no">02 /</span><h2>Indicadores-chave</h2></div>
+    <span class="section-note">Calculados sobre a seleção atual</span>
+  </div>
+  <section class="kpis" aria-label="Indicadores principais">
+    <article class="kpi primary"><span class="kpi-label">Registros filtrados</span><strong id="kCount">100</strong><small>Linhas na seleção atual</small></article>
+    <article class="kpi silver"><span class="kpi-label">Preço médio</span><strong id="kPrice">—</strong><small>USD · média simples</small></article>
+    <article class="kpi blue"><span class="kpi-label">Quilometragem média</span><strong id="kKm">—</strong><small>km · média simples</small></article>
+    <article class="kpi green"><span class="kpi-label">Status Delivered</span><strong id="kDelivered">—</strong><small>Participação nos registros</small></article>
+  </section>
+
+  <div class="section-head">
+    <div class="section-title"><span class="section-no">03 /</span><h2>Composição da operação</h2></div>
+    <span class="section-note">Distribuições atualizadas pelos filtros</span>
+  </div>
+  <section class="analysis-grid">
+    <article class="panel chart-panel">
+      <div class="panel-top"><h3>Faixas de quilometragem</h3><span class="panel-index">01 — VOLUME</span></div>
+      <p class="hint">Quantidade de registros em cada intervalo de km.</p>
+      <div class="chart-holder" id="mileageChart"></div>
+      <p class="chart-insight" id="mileageInsight">—</p>
+    </article>
+    <article class="panel chart-panel">
+      <div class="panel-top"><h3>Métodos de pagamento</h3><span class="panel-index">02 — MIX</span></div>
+      <p class="hint">Participação de cada método no conjunto filtrado.</p>
+      <div class="payment-layout" id="paymentChart"></div>
+      <p class="chart-insight" id="paymentInsight">—</p>
+    </article>
+    <article class="panel status-panel">
+      <div class="panel-top"><h3>Status da venda / entrega</h3><span class="panel-index">03 — PIPELINE</span></div>
+      <p class="hint">Distribuição dos status presentes nos registros. Não representa somente vendas concluídas.</p>
+      <div class="status-bar" id="statusBar" role="img" aria-label="Distribuição dos status"></div>
+      <div class="status-legend" id="statusLegend"></div>
+    </article>
+    <article class="panel status-panel">
+      <div class="panel-top"><h3>Leitura do recorte</h3><span class="panel-index">04 — CONTEXTO</span></div>
+      <p class="hint">Resumo descritivo da seleção atual.</p>
+      <div id="selectionInsight" class="muted-empty" style="min-height:115px;text-align:left;display:block;padding:6px 0"></div>
+    </article>
+  </section>
+
+  <div class="section-head">
+    <div class="section-title"><span class="section-no">03B /</span><h2>Análises complementares</h2></div>
+    <span class="section-note">Novas perspectivas · atualizadas pelos mesmos filtros</span>
+  </div>
+  <section class="additional-grid" aria-label="Gráficos complementares">
+    <article class="panel chart-panel">
+      <div class="panel-top"><h3>Preço × quilometragem</h3><span class="panel-index">A — DISPERSÃO</span></div>
+      <p class="hint">Cada ponto representa um registro. Passe o cursor sobre ele para consultar modelo, status, ano, cidade, preço e km.</p>
+      <div class="extra-chart" id="scatterChart"></div>
+      <div class="extra-legend" id="scatterLegend"></div>
+      <p class="chart-insight">A distribuição permite observar padrões, mas não demonstra que a quilometragem, isoladamente, cause diferenças de preço.</p>
+    </article>
+    <article class="panel chart-panel">
+      <div class="panel-top"><h3>Distribuição por faixa de preço</h3><span class="panel-index">B — VALOR</span></div>
+      <p class="hint">Quantidade de registros em intervalos de preço (USD).</p>
+      <div class="extra-chart" id="priceBandsChart"></div>
+      <p class="chart-insight" id="priceBandsInsight">—</p>
+    </article>
+    <article class="panel chart-panel">
+      <div class="panel-top"><h3>Registros por ano do modelo</h3><span class="panel-index">C — ANO</span></div>
+      <p class="hint">Distribuição dos veículos conforme o ano de modelo informado na base.</p>
+      <div class="extra-chart" id="modelYearChart"></div>
+      <p class="chart-insight" id="modelYearInsight">—</p>
+    </article>
+    <article class="panel chart-panel">
+      <div class="panel-top"><h3>Modelos com mais registros</h3><span class="panel-index">D — MODELOS</span></div>
+      <p class="hint">Top 10 modelos por quantidade de registros no recorte atual.</p>
+      <div class="extra-chart" id="topModelsChart"></div>
+      <p class="chart-insight" id="topModelsInsight">—</p>
+    </article>
+  </section>
+
+  <div class="section-head">
+    <div class="section-title"><span class="section-no">04 /</span><h2>Dispersão de preços por modelo</h2></div>
+    <span class="section-note">Modelos com pelo menos 2 registros</span>
+  </div>
+  <section class="panel table-panel">
+    <div class="panel-top"><h3>Amplitude de preço entre unidades do mesmo modelo</h3><span class="panel-index">USD · KM</span></div>
+    <p class="hint">Variação = (preço máximo ÷ preço mínimo − 1) × 100. Os intervalos de km mostram mínimo e máximo observados por modelo.</p>
+    <p class="sort-note">Clique em qualquer cabeçalho para ordenar. Colunas numéricas começam do maior para o menor; textos, em ordem alfabética.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th data-sort="price" data-key="model"><button class="sort-head" type="button" data-sort-table="price" data-sort-key="model"><span class="sort-label">Modelo</span><span class="sort-icon">↕</span></button></th>
+          <th class="num" data-sort="price" data-key="n"><button class="sort-head" type="button" data-sort-table="price" data-sort-key="n"><span class="sort-label">Unidades</span><span class="sort-icon">↕</span></button></th>
+          <th class="num" data-sort="price" data-key="lo"><button class="sort-head" type="button" data-sort-table="price" data-sort-key="lo"><span class="sort-label">Preço mínimo</span><span class="sort-icon">↕</span></button></th>
+          <th class="num" data-sort="price" data-key="hi"><button class="sort-head" type="button" data-sort-table="price" data-sort-key="hi"><span class="sort-label">Preço máximo</span><span class="sort-icon">↕</span></button></th>
+          <th class="num" data-sort="price" data-key="variation" aria-sort="descending"><button class="sort-head" type="button" data-sort-table="price" data-sort-key="variation"><span class="sort-label">Variação</span><span class="sort-icon">↕</span></button></th>
+          <th data-sort="price" data-key="kmLo"><button class="sort-head" type="button" data-sort-table="price" data-sort-key="kmLo"><span class="sort-label">Intervalo de km</span><span class="sort-icon">↕</span></button></th>
+        </tr></thead>
+        <tbody id="priceTable"></tbody>
+      </table>
+    </div>
+    <div class="table-foot"><span id="priceFoot">—</span><span>Valores em dólares americanos (USD)</span></div>
+    <p class="hint" id="priceInsight" style="margin:10px 0 0">A amplitude de preços não equivale a desconto negociado.</p>
+  </section>
+
+  <div class="section-head">
+    <div class="section-title"><span class="section-no">05 /</span><h2>Método de pagamento por estado</h2></div>
+    <span class="section-note">Empates no método líder são preservados</span>
+  </div>
+  <section class="panel table-panel">
+    <p class="sort-note">Clique em qualquer cabeçalho para ordenar os estados e métodos alfabeticamente ou os indicadores numéricos do maior para o menor.</p>
+    <div class="table-wrap" style="max-height:390px">
+      <table>
+        <thead><tr>
+          <th data-sort="state" data-key="state"><button class="sort-head" type="button" data-sort-table="state" data-sort-key="state"><span class="sort-label">Estado</span><span class="sort-icon">↕</span></button></th>
+          <th data-sort="state" data-key="leaders"><button class="sort-head" type="button" data-sort-table="state" data-sort-key="leaders"><span class="sort-label">Método mais frequente</span><span class="sort-icon">↕</span></button></th>
+          <th class="num" data-sort="state" data-key="max"><button class="sort-head" type="button" data-sort-table="state" data-sort-key="max"><span class="sort-label">Registros do líder</span><span class="sort-icon">↕</span></button></th>
+          <th class="num" data-sort="state" data-key="total"><button class="sort-head" type="button" data-sort-table="state" data-sort-key="total"><span class="sort-label">Total no estado</span><span class="sort-icon">↕</span></button></th>
+          <th class="num" data-sort="state" data-key="share"><button class="sort-head" type="button" data-sort-table="state" data-sort-key="share"><span class="sort-label">Participação do líder</span><span class="sort-icon">↕</span></button></th>
+        </tr></thead>
+        <tbody id="stateTable"></tbody>
+      </table>
+    </div>
+    <div class="table-foot"><span id="stateFoot">—</span><span>Agregação por UF, não por cidade</span></div>
+  </section>
+
+  <footer class="footer">
+    <div><strong>Fonte:</strong> porsche_database_sanitized.xlsx · aba “Sanitized ” · 100 registros</div>
+    <div>Dashboard exploratório · preços em USD · análise descritiva</div>
+  </footer>
+</main>
+
+<script>
+const DATA=[{"status":"Delivered","city":"Boston","mileage":9800,"price":79500.0,"payment":"Credit Card","year":2022,"model":"718 Cayman","state":"MA"},{"status":"Delivered","city":"Seattle","mileage":1200,"price":235000.0,"payment":"Wire Transfer","year":2024,"model":"911 Turbo S","state":"WA"},{"status":"In Transit","city":"Austin","mileage":6400,"price":112750.0,"payment":"Financing","year":2023,"model":"Cayenne Coupe","state":"TX"},{"status":"Pending","city":"Denver","mileage":28,"price":68900.0,"payment":"Cash","year":2021,"model":"Macan S","state":"CO"},{"status":"Delivered","city":"Los Angeles","mileage":0,"price":121000.0,"payment":"Bank Transfer","year":2024,"model":"Taycan 4S","state":"CA"},{"status":"Cancelled","city":"Miami","mileage":14500,"price":104500.0,"payment":"Credit Card","year":2023,"model":"Panamera 4","state":"FL"},{"status":"Delivered","city":"New York","mileage":41000,"price":96300.0,"payment":"Lease","year":2020,"model":"911 Carrera S","state":"NY"},{"status":"Pending Approval","city":"San Diego","mileage":11744,"price":89750.0,"payment":"Wire Transfer","year":2022,"model":"Cayenne E-Hybrid","state":"CA"},{"status":"Shipped","city":"Chicago","mileage":22300,"price":73500.0,"payment":"Debit Card","year":2021,"model":"718 Boxster","state":"IL"},{"status":"In Transit","city":"Phoenix","mileage":3500,"price":95000.0,"payment":"Financing","year":2024,"model":"Macan GTS","state":"AZ"},{"status":"Delivered","city":"Dallas","mileage":11,"price":153200.0,"payment":"ACH Payment","year":2023,"model":"Taycan Turbo","state":"TX"},{"status":"Pending","city":"Las Vegas","mileage":750,"price":241000.0,"payment":"Wire Transfer","year":2024,"model":"911 GT3","state":"NV"},{"status":"Delivered","city":"San Jose","mileage":19250,"price":132000.0,"payment":"Cash","year":2022,"model":"Panamera Turbo S","state":"CA"},{"status":"Awaiting Delivery","city":"Houston","mileage":2100,"price":188000.0,"payment":"Crypto Payment","year":2024,"model":"Cayenne Turbo GT","state":"TX"},{"status":"Delivered","city":"Atlanta","mileage":12000,"price":127800.0,"payment":"Credit Card","year":2023,"model":"911 Carrera Cabriolet","state":"GA"},{"status":"Pending","city":"Orlando","mileage":33700,"price":58900.0,"payment":"Bank Transfer","year":2021,"model":"Macan","state":"FL"},{"status":"In Transit","city":"Portland","mileage":900,"price":164000.0,"payment":"Financing","year":2024,"model":"718 Spyder RS","state":"OR"},{"status":"Delivered","city":"Charlotte","mileage":7800,"price":118500.0,"payment":"Wire Transfer","year":2023,"model":"Taycan Cross Turismo","state":"NC"},{"status":"Pending","city":"Nashville","mileage":16000,"price":91300.0,"payment":"Credit Card","year":2022,"model":"Cayenne S","state":"TN"},{"status":"Delivered","city":"Minneapolis","mileage":2500,"price":158750.0,"payment":"Lease","year":2024,"model":"911 Targa 4S","state":"MN"},{"status":"Cancelled","city":"Philadelphia","mileage":49000,"price":72000.0,"payment":"Bank Transfer","year":2020,"model":"Panamera","state":"PA"},{"status":"Delivered","city":"San Antonio","mileage":0,"price":86500.0,"payment":"Wire Transfer","year":2025,"model":"Macan Electric","state":"TX"},{"status":"Awaiting Pickup","city":"Salt Lake City","mileage":1050,"price":270000.0,"payment":"Cash","year":2024,"model":"911 Dakar","state":"UT"},{"status":"In Transit","city":"Raleigh","mileage":6250,"price":139000.0,"payment":"Financing","year":2023,"model":"Taycan GTS","state":"NC"},{"status":"Delivered","city":"Detroit","mileage":38400,"price":76800.0,"payment":"Credit Card","year":2021,"model":"Cayenne","state":"MI"},{"status":"Pending","city":"Columbus","mileage":400,"price":173600.0,"payment":"Wire Transfer","year":2024,"model":"718 Cayman GT4 RS","state":"OH"},{"status":"Delivered","city":"Indianapolis","mileage":13600,"price":119900.0,"payment":"Cash","year":2022,"model":"911 Carrera GTS","state":"IN"},{"status":"In Transit","city":"Fort Worth","mileage":8900,"price":109250.0,"payment":"Lease","year":2023,"model":"Panamera 4 E-Hybrid","state":"TX"},{"status":"Delivered","city":"Jacksonville","mileage":21750,"price":82000.0,"payment":"Wire Transfer","year":2022,"model":"Macan T","state":"FL"},{"status":"Pending Review","city":"San Diego","mileage":0,"price":214000.0,"payment":"Crypto Payment","year":2025,"model":"Taycan Turbo S","state":"CA"},{"status":"Delivered","city":"Tampa","mileage":4800,"price":124500.0,"payment":"Credit Card","year":2024,"model":"911 Carrera","state":"FL"},{"status":"Pending","city":"Sacramento","mileage":12200,"price":98200.0,"payment":"Bank Transfer","year":2023,"model":"Cayenne S","state":"CA"},{"status":"Delivered","city":"Cleveland","mileage":24100,"price":67500.0,"payment":"Financing","year":2022,"model":"Macan","state":"OH"},{"status":"In Transit","city":"Milwaukee","mileage":0,"price":116900.0,"payment":"Wire Transfer","year":2025,"model":"Taycan","state":"WI"},{"status":"Delivered","city":"Kansas City","mileage":10,"price":112000.0,"payment":"Cash","year":2024,"model":"Panamera 4S","state":"MO"},{"status":"Cancelled","city":"Omaha","mileage":31000,"price":74000.0,"payment":"Debit Card","year":2021,"model":"718 Boxster","state":"NE"},{"status":"Awaiting Delivery","city":"Albuquerque","mileage":2400,"price":198300.0,"payment":"Wire Transfer","year":2024,"model":"911 Turbo","state":"NM"},{"status":"Pending Approval","city":"Tucson","mileage":6773,"price":103750.0,"payment":"Wire Transfer","year":2023,"model":"Cayenne Coupe","state":"AZ"},{"status":"Shipped","city":"Fresno","mileage":5800,"price":93600.0,"payment":"Financing","year":2024,"model":"Macan GTS","state":"CA"},{"status":"In Transit","city":"Virginia Beach","mileage":0,"price":129000.0,"payment":"ACH Payment","year":2025,"model":"Taycan 4S","state":"VA"},{"status":"Delivered","city":"Colorado Springs","mileage":18400,"price":136000.0,"payment":"Credit Card","year":2022,"model":"Panamera Turbo","state":"CO"},{"status":"Pending","city":"Arlington","mileage":700,"price":286500.0,"payment":"Wire Transfer","year":2024,"model":"911 GT3 RS","state":"TX"},{"status":"Delivered","city":"Bakersfield","mileage":15000,"price":92800.0,"payment":"Lease","year":2023,"model":"Cayenne E-Hybrid","state":"CA"},{"status":"Awaiting Pickup","city":"Mesa","mileage":19750,"price":72400.0,"payment":"Cash","year":2022,"model":"Macan T","state":"AZ"},{"status":"Delivered","city":"Atlanta","mileage":3200,"price":158500.0,"payment":"Crypto Payment","year":2025,"model":"Taycan Turbo","state":"GA"},{"status":"Pending","city":"Long Beach","mileage":27600,"price":69900.0,"payment":"Bank Transfer","year":2021,"model":"718 Cayman","state":"CA"},{"status":"In Transit","city":"Oakland","mileage":2100,"price":141250.0,"payment":"Financing","year":2024,"model":"911 Targa 4","state":"CA"},{"status":"Delivered","city":"Tulsa","mileage":52000,"price":71500.0,"payment":"Wire Transfer","year":2020,"model":"Panamera","state":"OK"},{"status":"Pending","city":"Wichita","mileage":11300,"price":146800.0,"payment":"Credit Card","year":2023,"model":"Cayenne Turbo","state":"KS"},{"status":"Delivered","city":"New Orleans","mileage":0,"price":89700.0,"payment":"Lease","year":2025,"model":"Macan Electric","state":"LA"},{"status":"Cancelled","city":"Honolulu","mileage":15900,"price":104600.0,"payment":"Bank Transfer","year":2022,"model":"911 Carrera S","state":"HI"},{"status":"Delivered","city":"Anaheim","mileage":6600,"price":142000.0,"payment":"Wire Transfer","year":2024,"model":"Taycan GTS","state":"CA"},{"status":"Awaiting Review","city":"Henderson","mileage":40250,"price":78400.0,"payment":"Cash","year":2021,"model":"Cayenne","state":"NV"},{"status":"In Transit","city":"Lexington","mileage":850,"price":169000.0,"payment":"Financing","year":2025,"model":"718 Spyder RS","state":"KY"},{"status":"Delivered","city":"Riverside","mileage":1400,"price":268900.0,"payment":"Credit Card","year":2024,"model":"911 Dakar","state":"CA"},{"status":"Pending","city":"Corpus Christi","mileage":12700,"price":101300.0,"payment":"Wire Transfer","year":2023,"model":"Panamera 4","state":"TX"},{"status":"Delivered","city":"St. Louis","mileage":29800,"price":66750.0,"payment":"Cash","year":2021,"model":"Macan S","state":"MO"},{"status":"In Transit","city":"Pittsburgh","mileage":7500,"price":127900.0,"payment":"Lease","year":2024,"model":"Taycan Cross Turismo","state":"PA"},{"status":"Delivered","city":"Cincinnati","mileage":1950,"price":200000.0,"payment":"Wire Transfer","year":2025,"model":"Cayenne Turbo GT","state":"OH"},{"status":"Pending Review","city":"Anchorage","mileage":8800,"price":132000.0,"payment":"Crypto Payment","year":2023,"model":"911 Carrera Cabriolet","state":"AK"},{"status":"Delivered","city":"Plano","mileage":600,"price":176400.0,"payment":"Credit Card","year":2024,"model":"718 Cayman GT4 RS","state":"TX"},{"status":"Cancelled","city":"Newark","mileage":16200,"price":108500.0,"payment":"Bank Transfer","year":2022,"model":"Panamera 4 E-Hybrid","state":"NJ"},{"status":"Awaiting Delivery","city":"Greensboro","mileage":36000,"price":59000.0,"payment":"Financing","year":2021,"model":"Macan","state":"NC"},{"status":"Pending","city":"Lincoln","mileage":0,"price":218000.0,"payment":"Wire Transfer","year":2025,"model":"Taycan Turbo S","state":"NE"},{"status":"Delivered","city":"Jersey City","mileage":5300,"price":99950.0,"payment":"Debit Card","year":2024,"model":"Cayenne S","state":"NJ"},{"status":"Delivered","city":"Chandler","mileage":5872,"price":121750.0,"payment":"Credit Card","year":2024,"model":"911 Carrera GTS","state":"AZ"},{"status":"Shipped","city":"Reno","mileage":13300,"price":91500.0,"payment":"Lease","year":2023,"model":"718 Boxster GTS","state":"NV"},{"status":"In Transit","city":"Buffalo","mileage":20100,"price":134000.0,"payment":"Wire Transfer","year":2022,"model":"Panamera Turbo S","state":"NY"},{"status":"Delivered","city":"Durham","mileage":0,"price":96800.0,"payment":"ACH Payment","year":2024,"model":"Macan GTS","state":"NC"},{"status":"Pending Approval","city":"Laredo","mileage":2900,"price":131600.0,"payment":"Wire Transfer","year":2025,"model":"Taycan 4S","state":"TX"},{"status":"Delivered","city":"Madison","mileage":13100,"price":94300.0,"payment":"Cash","year":2023,"model":"Cayenne E-Hybrid","state":"WI"},{"status":"Awaiting Pickup","city":"Lubbock","mileage":1100,"price":242000.0,"payment":"Crypto Payment","year":2025,"model":"911 Turbo S","state":"TX"},{"status":"Cancelled","city":"Toledo","mileage":22500,"price":82750.0,"payment":"Credit Card","year":2022,"model":"718 Cayman S","state":"OH"},{"status":"Delivered","city":"Irvine","mileage":0,"price":91300.0,"payment":"Wire Transfer","year":2026,"model":"Macan Electric","state":"CA"},{"status":"Pending","city":"Garland","mileage":44800,"price":79900.0,"payment":"Financing","year":2021,"model":"Panamera","state":"TX"},{"status":"In Transit","city":"Irving","mileage":6700,"price":111000.0,"payment":"Bank Transfer","year":2024,"model":"Cayenne Coupe","state":"TX"},{"status":"Delivered","city":"Chesapeake","mileage":4200,"price":156500.0,"payment":"Cash","year":2023,"model":"911 Targa 4S","state":"VA"},{"status":"Pending","city":"Scottsdale","mileage":1250,"price":119900.0,"payment":"Lease","year":2025,"model":"Taycan","state":"AZ"},{"status":"Delivered","city":"Norfolk","mileage":18600,"price":73200.0,"payment":"Wire Transfer","year":2022,"model":"Macan T","state":"VA"},{"status":"Awaiting Delivery","city":"Boise","mileage":3000,"price":224000.0,"payment":"Wire Transfer","year":2024,"model":"911 GT3","state":"ID"},{"status":"Delivered","city":"Orlando","mileage":7200,"price":126900.0,"payment":"Credit Card","year":2024,"model":"911 Carrera","state":"FL"},{"status":"Pending","city":"San Jose","mileage":21400,"price":84500.0,"payment":"Bank Transfer","year":2023,"model":"Cayenne","state":"CA"},{"status":"Delivered","city":"Tampa","mileage":26300,"price":69800.0,"payment":"Financing","year":2022,"model":"Macan S","state":"FL"},{"status":"In Transit","city":"Denver","mileage":0,"price":132700.0,"payment":"Wire Transfer","year":2025,"model":"Taycan 4S","state":"CO"},{"status":"Delivered","city":"Austin","mileage":42,"price":81000.0,"payment":"Cash","year":2021,"model":"Panamera","state":"TX"},{"status":"Cancelled","city":"Seattle","mileage":17500,"price":78900.0,"payment":"Debit Card","year":2023,"model":"718 Cayman","state":"WA"},{"status":"Awaiting Delivery","city":"Boston","mileage":900,"price":249300.0,"payment":"Wire Transfer","year":2026,"model":"911 Turbo S","state":"MA"},{"status":"Pending Approval","city":"Phoenix","mileage":5530,"price":108750.0,"payment":"Wire Transfer","year":2024,"model":"Cayenne Coupe","state":"AZ"},{"status":"Shipped","city":"Chicago","mileage":0,"price":92600.0,"payment":"Financing","year":2026,"model":"Macan Electric","state":"IL"},{"status":"In Transit","city":"Dallas","mileage":0,"price":164000.0,"payment":"ACH Payment","year":2025,"model":"Taycan Turbo","state":"TX"},{"status":"Delivered","city":"San Francisco","mileage":13400,"price":119000.0,"payment":"Credit Card","year":2024,"model":"Panamera 4S","state":"CA"},{"status":"Pending","city":"Las Vegas","mileage":1700,"price":232500.0,"payment":"Wire Transfer","year":2026,"model":"911 GT3","state":"NV"},{"status":"Delivered","city":"Charlotte","mileage":14000,"price":96800.0,"payment":"Lease","year":2023,"model":"Cayenne E-Hybrid","state":"NC"},{"status":"Awaiting Pickup","city":"Mesa","mileage":20750,"price":74400.0,"payment":"Cash","year":2022,"model":"Macan T","state":"AZ"},{"status":"Delivered","city":"Atlanta","mileage":5200,"price":148500.0,"payment":"Crypto Payment","year":2025,"model":"Taycan GTS","state":"GA"},{"status":"Pending","city":"Long Beach","mileage":29600,"price":71900.0,"payment":"Bank Transfer","year":2021,"model":"718 Boxster","state":"CA"},{"status":"In Transit","city":"Oakland","mileage":3100,"price":143250.0,"payment":"Financing","year":2024,"model":"911 Targa 4","state":"CA"},{"status":"Delivered","city":"Tulsa","mileage":48000,"price":137500.0,"payment":"Wire Transfer","year":2020,"model":"Panamera Turbo","state":"OK"},{"status":"Pending","city":"Wichita","mileage":3300,"price":204800.0,"payment":"Credit Card","year":2025,"model":"Cayenne Turbo GT","state":"KS"},{"status":"Delivered","city":"New Orleans","mileage":1050,"price":271700.0,"payment":"Lease","year":2024,"model":"911 Dakar","state":"LA"}];
+const $=id=>document.getElementById(id);
+const fmt=n=>new Intl.NumberFormat('pt-BR',{maximumFractionDigits:0}).format(n);
+const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);
+const pct=n=>n.toFixed(1).replace('.',',')+'%';
+const COLORS=['#d5001c','#9aa6b2','#65798a','#c1a17b','#7e9e8d','#8c80a6','#c16c5c','#647d9c','#a5a7a9','#8a9270','#b37f9b'];
+const STATUS_COLORS={'Delivered':'#82a991','In Transit':'#6d91b2','Pending':'#c4a36c','Pending Approval':'#b78d65','Pending Review':'#9e8bb8','Awaiting Delivery':'#b18d9c','Awaiting Pickup':'#c17b6d','Awaiting Review':'#9c9b78','Shipped':'#789aa2','Cancelled':'#9a606a'};
+const unique=k=>[...new Set(DATA.map(d=>d[k]))].sort((a,b)=>String(a).localeCompare(String(b),'pt-BR'));
+function fill(id,values){values.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;$(id).appendChild(o)})}
+[['status','status'],['city','city'],['payment','payment'],['year','year'],['model','model'],['state','state']].forEach(([id,key])=>fill(id,unique(key)));
+const ids=['status','city','kmMin','kmMax','priceMin','priceMax','payment','year','model','state'];
+const labels={status:'Status',city:'Cidade',kmMin:'Km mín.',kmMax:'Km máx.',priceMin:'Preço mín.',priceMax:'Preço máx.',payment:'Pagamento',year:'Ano',model:'Modelo',state:'UF'};
+const valueOf=id=>$(id).value;
+function filtered(){
+ return DATA.filter(d=>{
+  const v=valueOf;
+  return (!v('status')||d.status===v('status'))&&(!v('city')||d.city===v('city'))&&(!v('payment')||d.payment===v('payment'))&&(!v('year')||String(d.year)===v('year'))&&(!v('model')||d.model===v('model'))&&(!v('state')||d.state===v('state'))&&(v('kmMin')===''||d.mileage>=Number(v('kmMin')))&&(v('kmMax')===''||d.mileage<=Number(v('kmMax')))&&(v('priceMin')===''||d.price>=Number(v('priceMin')))&&(v('priceMax')===''||d.price<=Number(v('priceMax')));
+ });
+}
+function activeFilterTags(){
+ const active=ids.filter(id=>valueOf(id)!=='');
+ $('activeTags').replaceChildren();
+ active.forEach(id=>{
+  const t=document.createElement('span');t.className='tag';
+  const label=labels[id],value=ids.includes(id)&&['kmMin','kmMax'].includes(id)?fmt(Number(valueOf(id))):id==='priceMin'||id==='priceMax'?money(Number(valueOf(id))):valueOf(id);
+  t.textContent=label+': '+value;$('activeTags').appendChild(t);
+ });
+ $('filterSummary').textContent=active.length?active.length+' filtro(s) ativo(s)':'Nenhum filtro aplicado';
+}
+function setEmpty(host,message){host.innerHTML='';const el=document.createElement('div');el.className='muted-empty';el.textContent=message;host.appendChild(el)}
+function renderMileageChart(d){
+ const bins=[['0–5.000 km',0,5000],['5.001–10.000 km',5001,10000],['10.001–20.000 km',10001,20000],['20.001–30.000 km',20001,30000],['30.001–50.000 km',30001,50000],['Acima de 50.000 km',50001,Infinity]];
+ const values=bins.map(([name,lo,hi])=>({name,value:d.filter(x=>x.mileage>=lo&&x.mileage<=hi).length}));
+ const host=$('mileageChart');host.replaceChildren();
+ if(!d.length){setEmpty(host,'Sem registros nesta seleção.');$('mileageInsight').textContent='';return}
+ const max=Math.max(1,...values.map(x=>x.value)),width=690,rowH=34,top=5,height=values.length*rowH+7;
+ const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+ svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.setAttribute('class','mileage-svg');svg.setAttribute('role','img');svg.setAttribute('aria-label','Registros por faixa de quilometragem');
+ values.forEach((item,i)=>{
+  const y=top+i*rowH,barX=174,barW=450,fillW=item.value/max*barW;
+  const make=(tag,attrs,text)=>{const n=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(text!==undefined)n.textContent=text;return n};
+  svg.appendChild(make('text',{x:0,y:y+17,class:'axis-label'},item.name));
+  svg.appendChild(make('rect',{x:barX,y:y+5,width:barW,height:12,rx:6,class:'bar-track'}));
+  const rect=make('rect',{x:barX,y:y+5,width:fillW,height:12,rx:6,class:'bar-rect',fill:i===values.reduce((best,x,j)=>x.value>values[best].value?j:best,0)?'#e11d36':'#87919c',tabindex:'0','aria-label':`${item.name}: ${item.value} registros`});
+  const title=make('title',{},`${item.name}: ${item.value} registro(s) · ${pct(item.value/d.length*100)}`);rect.appendChild(title);svg.appendChild(rect);
+  svg.appendChild(make('text',{x:barX+barW+14,y:y+16,class:'bar-count'},fmt(item.value)));
+ });
+ host.appendChild(svg);
+ const sorted=[...values].sort((a,b)=>b.value-a.value);
+ $('mileageInsight').textContent=`Faixa mais frequente: ${sorted[0].name} (${sorted[0].value} registros). Menos frequente: ${sorted[sorted.length-1].name} (${sorted[sorted.length-1].value}).`;
+}
+function renderPayment(d){
+ const host=$('paymentChart');host.replaceChildren();
+ const map={};d.forEach(x=>map[x.payment]=(map[x.payment]||0)+1);
+ const entries=Object.entries(map).sort((a,b)=>b[1]-a[1]);
+ if(!entries.length){setEmpty(host,'Sem registros nesta seleção.');$('paymentInsight').textContent='';return}
+ const total=d.length,circ=2*Math.PI*65,svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+ svg.setAttribute('viewBox','0 0 180 180');svg.setAttribute('class','donut-svg');svg.setAttribute('role','img');svg.setAttribute('aria-label','Distribuição dos métodos de pagamento');
+ let offset=0;
+ entries.forEach(([name,val],i)=>{
+  const len=val/total*circ,c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  c.setAttribute('cx','90');c.setAttribute('cy','90');c.setAttribute('r','65');c.setAttribute('fill','none');c.setAttribute('stroke',COLORS[i%COLORS.length]);c.setAttribute('stroke-width','23');c.setAttribute('stroke-dasharray',`${len} ${circ-len}`);c.setAttribute('stroke-dashoffset',-offset);c.setAttribute('transform','rotate(-90 90 90)');c.setAttribute('tabindex','0');c.setAttribute('aria-label',`${name}: ${val} registros`);
+  const title=document.createElementNS('http://www.w3.org/2000/svg','title');title.textContent=`${name}: ${val} (${pct(val/total*100)})`;c.appendChild(title);svg.appendChild(c);offset+=len;
+ });
+ const center=document.createElementNS('http://www.w3.org/2000/svg','text');center.setAttribute('x','90');center.setAttribute('y','87');center.setAttribute('class','donut-center');center.textContent=fmt(total);svg.appendChild(center);
+ const sub=document.createElementNS('http://www.w3.org/2000/svg','text');sub.setAttribute('x','90');sub.setAttribute('y','103');sub.setAttribute('class','donut-sub');sub.textContent='REGISTROS';svg.appendChild(sub);
+ host.appendChild(svg);
+ const legend=document.createElement('div');legend.className='legend';
+ entries.forEach(([name,val],i)=>{
+  const row=document.createElement('div');row.className='legend-row';
+  const dot=document.createElement('span');dot.className='legend-dot';dot.style.background=COLORS[i%COLORS.length];
+  const nm=document.createElement('span');nm.className='legend-name';nm.textContent=name;nm.title=name;
+  const v=document.createElement('span');v.className='legend-val';v.textContent=val+' · '+pct(val/total*100);
+  row.append(dot,nm,v);legend.appendChild(row);
+ });
+ host.appendChild(legend);
+ $('paymentInsight').textContent=`Método mais popular: ${entries[0][0]} (${entries[0][1]} de ${total}; ${pct(entries[0][1]/total*100)}).`;
+}
+function renderStatuses(d){
+ const counts={};d.forEach(x=>counts[x.status]=(counts[x.status]||0)+1);
+ const entries=Object.entries(counts).sort((a,b)=>b[1]-a[1]),bar=$('statusBar'),legend=$('statusLegend');bar.replaceChildren();legend.replaceChildren();
+ if(!entries.length){bar.style.display='none';setEmpty(legend,'Sem registros nesta seleção.');return}
+ bar.style.display='flex';
+ entries.forEach(([name,val])=>{
+  const seg=document.createElement('span');seg.className='status-segment';seg.style.width=(val/d.length*100)+'%';seg.style.background=STATUS_COLORS[name]||'#8b929c';seg.title=`${name}: ${val} (${pct(val/d.length*100)})`;bar.appendChild(seg);
+  const item=document.createElement('div');item.className='status-item';
+  const dot=document.createElement('span');dot.className='legend-dot';dot.style.background=STATUS_COLORS[name]||'#8b929c';
+  const nm=document.createElement('span');nm.className='name';nm.textContent=name;
+  const n=document.createElement('span');n.className='value';n.textContent=val+' · '+pct(val/d.length*100);
+  item.append(dot,nm,n);legend.appendChild(item);
+ });
+}
+const tableSort={
+ price:{key:'variation',dir:'desc'},
+ state:{key:null,dir:null}
+};
+const isTextSortKey=key=>['model','state','leaders'].includes(key);
+function sortRows(rows,tableName){
+ const state=tableSort[tableName];
+ if(!state.key){
+  return [...rows].sort((a,b)=>tableName==='state'?a.state.localeCompare(b.state,'pt-BR',{sensitivity:'base'}):b.variation-a.variation);
+ }
+ const {key,dir}=state,mult=dir==='asc'?1:-1;
+ return [...rows].sort((a,b)=>{
+  let result;
+  if(isTextSortKey(key)) result=String(a[key]).localeCompare(String(b[key]),'pt-BR',{numeric:true,sensitivity:'base'});
+  else result=(Number(a[key])||0)-(Number(b[key])||0);
+  if(result===0 && key==='kmLo') result=(a.kmHi-b.kmHi);
+  return result*mult;
+ });
+}
+function updateSortIndicators(){
+ document.querySelectorAll('.sort-head').forEach(button=>{
+  const table=button.dataset.sortTable,key=button.dataset.sortKey,state=tableSort[table];
+  const active=state.key===key;
+  const th=button.closest('th');
+  th.setAttribute('aria-sort',active?(state.dir==='asc'?'ascending':'descending'):'none');
+  button.querySelector('.sort-icon').textContent=active?(state.dir==='asc'?'▲':'▼'):'↕';
+  button.setAttribute('aria-label',button.querySelector('.sort-label').textContent+(active?(state.dir==='asc'?' · ordem crescente':' · ordem decrescente'):' · ordenar'));
+ });
+}
+document.querySelectorAll('.sort-head').forEach(button=>button.addEventListener('click',()=>{
+ const table=button.dataset.sortTable,key=button.dataset.sortKey,state=tableSort[table];
+ if(state.key===key) state.dir=state.dir==='asc'?'desc':'asc';
+ else {state.key=key;state.dir=isTextSortKey(key)?'asc':'desc';}
+ render();
+}));
+function svgNode(tag,attrs={},text){
+ const node=document.createElementNS('http://www.w3.org/2000/svg',tag);
+ Object.entries(attrs).forEach(([key,value])=>node.setAttribute(key,String(value)));
+ if(text!==undefined)node.textContent=text;
+ return node;
+}
+function chartEmpty(id,message){setEmpty($(id),message)}
+function renderScatter(d){
+ const host=$('scatterChart'),legend=$('scatterLegend');host.replaceChildren();legend.replaceChildren();
+ if(!d.length){chartEmpty('scatterChart','Sem registros nesta seleção.');return}
+ const W=720,H=270,L=64,R=18,T=12,B=42,PW=W-L-R,PH=H-T-B;
+ const xMax=Math.max(5000,Math.ceil(Math.max(...d.map(x=>x.mileage))/5000)*5000);
+ const yMin=Math.floor(Math.min(...d.map(x=>x.price))/25000)*25000;
+ const yMax=Math.ceil(Math.max(...d.map(x=>x.price))/25000)*25000;
+ const ySpan=Math.max(25000,yMax-yMin);
+ const svg=svgNode('svg',{viewBox:`0 0 ${W} ${H}`,class:'extra-svg',role:'img','aria-label':'Gráfico de dispersão relacionando quilometragem e preço'});
+ for(let i=0;i<=4;i++){
+  const val=yMin+ySpan*i/4,y=T+PH-(val-yMin)/ySpan*PH;
+  svg.appendChild(svgNode('line',{x1:L,y1:y,x2:W-R,y2:y,class:'grid-line'}));
+  svg.appendChild(svgNode('text',{x:L-9,y:y+3,'text-anchor':'end',class:'axis'},'$'+Math.round(val/1000)+'k'));
+ }
+ for(let i=0;i<=4;i++){
+  const val=xMax*i/4,x=L+val/xMax*PW;
+  svg.appendChild(svgNode('line',{x1:x,y1:T,x2:x,y2:T+PH,class:'grid-line'}));
+  svg.appendChild(svgNode('text',{x,y:T+PH+17,'text-anchor':'middle',class:'axis'},fmt(Math.round(val))));
+ }
+ svg.appendChild(svgNode('text',{x:L+PW/2,y:H-4,'text-anchor':'middle',class:'axis-strong'},'Quilometragem (km)'));
+ svg.appendChild(svgNode('text',{x:13,y:T+PH/2,transform:`rotate(-90 13 ${T+PH/2})`,'text-anchor':'middle',class:'axis-strong'},'Preço (USD)'));
+ const usedStatuses=[...new Set(d.map(x=>x.status))].sort((a,b)=>a.localeCompare(b,'pt-BR'));
+ d.forEach(item=>{
+  const x=L+(item.mileage/xMax)*PW,y=T+PH-((item.price-yMin)/ySpan)*PH;
+  const c=svgNode('circle',{cx:x,cy:y,r:4.4,fill:STATUS_COLORS[item.status]||'#9aa6b2',stroke:'#111316','stroke-width':1.2,opacity:.88,tabindex:0,role:'img'});
+  c.appendChild(svgNode('title',{},`${item.model} · ${item.year}\n${item.city}, ${item.state}\n${money(item.price)} · ${fmt(item.mileage)} km\nStatus: ${item.status}`));
+  svg.appendChild(c);
+ });
+ host.appendChild(svg);
+ usedStatuses.forEach(status=>{
+  const item=document.createElement('span');item.className='extra-legend-item';
+  const dot=document.createElement('span');dot.className='extra-legend-dot';dot.style.background=STATUS_COLORS[status]||'#9aa6b2';
+  const label=document.createElement('span');label.textContent=status;item.append(dot,label);legend.appendChild(item);
+ });
+}
+function renderPriceBands(d){
+ const host=$('priceBandsChart');host.replaceChildren();
+ if(!d.length){chartEmpty('priceBandsChart','Sem registros nesta seleção.');$('priceBandsInsight').textContent='';return}
+ const bins=[
+  {name:'US$ 50–75 mil',lo:50000,hi:75000},
+  {name:'US$ 75–100 mil',lo:75000,hi:100000},
+  {name:'US$ 100–125 mil',lo:100000,hi:125000},
+  {name:'US$ 125–150 mil',lo:125000,hi:150000},
+  {name:'US$ 150–200 mil',lo:150000,hi:200000},
+  {name:'Acima de US$ 200 mil',lo:200000,hi:Infinity}
+ ].map(bin=>({...bin,count:d.filter(x=>x.price>=bin.lo&&x.price<bin.hi).length}));
+ const max=Math.max(1,...bins.map(x=>x.count)),W=700,H=230,L=165,R=42,T=8,rowH=34,barW=W-L-R;
+ const svg=svgNode('svg',{viewBox:`0 0 ${W} ${H}`,class:'extra-svg',role:'img','aria-label':'Distribuição de registros por faixa de preço'});
+ bins.forEach((bin,i)=>{
+  const y=T+i*rowH,w=bin.count/max*barW;
+  svg.appendChild(svgNode('text',{x:L-10,y:y+16,'text-anchor':'end',class:'axis'},bin.name));
+  svg.appendChild(svgNode('rect',{x:L,y:y+4,width:barW,height:13,rx:6,class:'bar-bg'}));
+  const bar=svgNode('rect',{x:L,y:y+4,width:w,height:13,rx:6,fill:i===bins.reduce((best,x,j)=>x.count>bins[best].count?j:best,0)?'#e11d36':'#82909e',class:'bar-hover',tabindex:0});
+  bar.appendChild(svgNode('title',{},`${bin.name}: ${bin.count} registros (${pct(bin.count/d.length*100)})`));svg.appendChild(bar);
+  svg.appendChild(svgNode('text',{x:L+barW+10,y:y+16,class:'axis-strong'},fmt(bin.count)));
+ });
+ host.appendChild(svg);
+ const peak=[...bins].sort((a,b)=>b.count-a.count)[0];$('priceBandsInsight').textContent=`Faixa com mais registros: ${peak.name} (${peak.count} de ${d.length}).`;
+}
+function renderModelYears(d){
+ const host=$('modelYearChart');host.replaceChildren();
+ if(!d.length){chartEmpty('modelYearChart','Sem registros nesta seleção.');$('modelYearInsight').textContent='';return}
+ const counts={};d.forEach(x=>counts[x.year]=(counts[x.year]||0)+1);
+ const values=Object.entries(counts).map(([year,count])=>({year:Number(year),count})).sort((a,b)=>a.year-b.year);
+ const W=700,H=230,L=48,R=18,T=16,B=37,PW=W-L-R,PH=H-T-B,max=Math.max(1,...values.map(x=>x.count));
+ const svg=svgNode('svg',{viewBox:`0 0 ${W} ${H}`,class:'extra-svg',role:'img','aria-label':'Registros por ano do modelo'});
+ for(let i=0;i<=4;i++){
+  const val=max*i/4,y=T+PH-val/max*PH;
+  svg.appendChild(svgNode('line',{x1:L,y1:y,x2:W-R,y2:y,class:'grid-line'}));
+  svg.appendChild(svgNode('text',{x:L-9,y:y+3,'text-anchor':'end',class:'axis'},Math.round(val).toString()));
+ }
+ const slot=PW/values.length,bw=Math.min(48,slot*.58);
+ values.forEach((item,i)=>{
+  const x=L+i*slot+(slot-bw)/2,h=item.count/max*PH,y=T+PH-h;
+  const bar=svgNode('rect',{x,y,width:bw,height:h,rx:4,fill:i===values.length-1?'#d5001c':'#83909d',class:'bar-hover',tabindex:0});
+  bar.appendChild(svgNode('title',{},`${item.year}: ${item.count} registros`));svg.appendChild(bar);
+  svg.appendChild(svgNode('text',{x:x+bw/2,y:y-7,'text-anchor':'middle',class:'axis-strong'},fmt(item.count)));
+  svg.appendChild(svgNode('text',{x:x+bw/2,y:H-13,'text-anchor':'middle',class:'axis'},String(item.year)));
+ });
+ host.appendChild(svg);
+ const best=[...values].sort((a,b)=>b.count-a.count)[0];$('modelYearInsight').textContent=`Ano mais frequente: ${best.year} (${best.count} registros).`;
+}
+function renderTopModels(d){
+ const host=$('topModelsChart');host.replaceChildren();
+ if(!d.length){chartEmpty('topModelsChart','Sem registros nesta seleção.');$('topModelsInsight').textContent='';return}
+ const counts={};d.forEach(x=>counts[x.model]=(counts[x.model]||0)+1);
+ const values=Object.entries(counts).map(([name,count])=>({name,count})).sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,'pt-BR')).slice(0,10);
+ const max=Math.max(1,...values.map(x=>x.count)),W=700,H=Math.max(220,values.length*22+12),L=190,R=40,T=6,rowH=22,barW=W-L-R;
+ const svg=svgNode('svg',{viewBox:`0 0 ${W} ${H}`,class:'extra-svg',role:'img','aria-label':'Dez modelos com maior quantidade de registros'});
+ values.forEach((item,i)=>{
+  const y=T+i*rowH,w=item.count/max*barW;
+  svg.appendChild(svgNode('text',{x:L-10,y:y+14,'text-anchor':'end',class:'axis'},item.name));
+  svg.appendChild(svgNode('rect',{x:L,y:y+3,width:barW,height:11,rx:5,class:'bar-bg'}));
+  const bar=svgNode('rect',{x:L,y:y+3,width:w,height:11,rx:5,fill:i===0?'#d5001c':'#8794a1',class:'bar-hover',tabindex:0});
+  bar.appendChild(svgNode('title',{},`${item.name}: ${item.count} registros`));svg.appendChild(bar);
+  svg.appendChild(svgNode('text',{x:L+barW+10,y:y+14,class:'axis-strong'},fmt(item.count)));
+ });
+ host.appendChild(svg);
+ const top=values[0];$('topModelsInsight').textContent=`Modelo com maior frequência: ${top.name} (${top.count} registros).`;
+}
+function renderPriceTable(d){
+ const groups={};d.forEach(x=>(groups[x.model]??=[]).push(x));
+ const rows=Object.entries(groups).filter(([,arr])=>arr.length>=2).map(([name,arr])=>{
+  const lo=Math.min(...arr.map(x=>x.price)),hi=Math.max(...arr.map(x=>x.price));
+  const kmLo=Math.min(...arr.map(x=>x.mileage)),kmHi=Math.max(...arr.map(x=>x.mileage));
+  return{name,model:name,n:arr.length,lo,hi,variation:(hi/lo-1)*100,kmLo,kmHi};
+ });
+ const sortedRows=sortRows(rows,'price');
+ const body=$('priceTable');body.replaceChildren();
+ if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=6;td.className='empty';td.textContent='Nenhum modelo possui 2 ou mais registros nesta seleção.';tr.appendChild(td);body.appendChild(tr)}
+ else sortedRows.forEach(x=>{
+  const tr=document.createElement('tr');
+  const cells=[['model-name',x.name],['num',x.n],['num',money(x.lo)],['num',money(x.hi)],['num variation',pct(x.variation)]];
+  cells.forEach(([cls,val])=>{const td=document.createElement('td');td.className=cls;td.textContent=val;tr.appendChild(td)});
+  const km=document.createElement('td');km.appendChild(document.createTextNode(`${fmt(x.kmLo)} – ${fmt(x.kmHi)} km`));tr.appendChild(km);body.appendChild(tr);
+ });
+ $('priceFoot').textContent=rows.length+' modelo(s) com múltiplas unidades na seleção';
+ $('priceInsight').textContent='A amplitude de preços não equivale a desconto negociado. Ano, versão, opcionais e condição do veículo também podem influenciar o preço; a quilometragem, isoladamente, não explica as diferenças.';
+}
+function renderStateTable(d){
+ const by={};d.forEach(x=>{by[x.state]??={};by[x.state][x.payment]=(by[x.state][x.payment]||0)+1});
+ const rows=Object.entries(by).map(([state,methods])=>{
+  const max=Math.max(...Object.values(methods)),leaders=Object.entries(methods).filter(([,v])=>v===max).map(([k])=>k).join(' / ');
+  const total=Object.values(methods).reduce((s,v)=>s+v,0);return{state,leaders,max,total,share:max/total*100};
+ });
+ const sortedRows=sortRows(rows,'state');
+ const body=$('stateTable');body.replaceChildren();
+ if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=5;td.className='empty';td.textContent='Sem registros nesta seleção.';tr.appendChild(td);body.appendChild(tr)}
+ else sortedRows.forEach(x=>{
+  const tr=document.createElement('tr');
+  [[x.state,''],[x.leaders,'state-method'],[x.max,'num'],[x.total,'num']].forEach(([v,c])=>{const td=document.createElement('td');td.textContent=v;td.className=c;tr.appendChild(td)});
+  const td=document.createElement('td');td.className='num';const wrap=document.createElement('div');wrap.className='share-cell';const val=document.createElement('span');val.textContent=pct(x.share);const track=document.createElement('span');track.className='mini-track';const fill=document.createElement('span');fill.className='mini-fill';fill.style.width=x.share+'%';track.appendChild(fill);wrap.append(val,track);td.appendChild(wrap);tr.appendChild(td);body.appendChild(tr);
+ });
+ $('stateFoot').textContent=rows.length+' estado(s) na seleção';
+}
+function renderSelectionInsight(d){
+ const host=$('selectionInsight');
+ if(!d.length){host.textContent='A seleção atual não contém registros. Ajuste ou limpe os filtros para retomar a análise.';return}
+ const topModel=Object.entries(d.reduce((a,x)=>(a[x.model]=(a[x.model]||0)+1,a),{})).sort((a,b)=>b[1]-a[1])[0];
+ const topState=Object.entries(d.reduce((a,x)=>(a[x.state]=(a[x.state]||0)+1,a),{})).sort((a,b)=>b[1]-a[1])[0];
+ const avgPrice=d.reduce((s,x)=>s+x.price,0)/d.length;
+ const p=document.createElement('p');p.style.margin='0 0 8px';p.style.color='#d4d7db';p.textContent=`A seleção reúne ${d.length} registro(s), com preço médio de ${money(avgPrice)}.`;
+ const p2=document.createElement('p');p2.style.margin='0';p2.style.color='#969da6';p2.textContent=`Modelo mais frequente: ${topModel[0]} (${topModel[1]}). Estado com mais registros: ${topState[0]} (${topState[1]}).`;
+ host.replaceChildren(p,p2);
+}
+function render(){
+ const d=filtered(),n=d.length;
+ $('recordCount').textContent=`${fmt(n)} de ${fmt(DATA.length)} registros`;
+ $('kCount').textContent=fmt(n);
+ $('kPrice').textContent=n?money(d.reduce((s,x)=>s+x.price,0)/n):'—';
+ $('kKm').textContent=n?fmt(Math.round(d.reduce((s,x)=>s+x.mileage,0)/n)):'—';
+ $('kDelivered').textContent=n?pct(d.filter(x=>x.status==='Delivered').length/n*100):'—';
+ activeFilterTags();
+ renderMileageChart(d);renderPayment(d);renderStatuses(d);renderPriceTable(d);renderStateTable(d);renderSelectionInsight(d);
+ renderScatter(d);renderPriceBands(d);renderModelYears(d);renderTopModels(d);updateSortIndicators();
+}
+ids.forEach(id=>{const event=$(id).tagName==='SELECT'?'change':'input';$(id).addEventListener(event,render)});
+$('reset').addEventListener('click',()=>{ids.forEach(id=>$(id).value='');render()});
+render();
+</script>
+</body>
+</html>
